@@ -1,8 +1,9 @@
 {
   "tasks": {
-    "cli": "deno run cmd/cli.ts"
+    "cli": "deno run -RWE --allow-ffi --unstable-ffi cmd/cli.ts"
   },
   "imports": {
+    "@db/sqlite": "jsr:@db/sqlite@^0.12.0",
     "@std/cli": "jsr:@std/cli@^1.0.11"
   }
 }

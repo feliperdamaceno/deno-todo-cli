@@ -1,10 +1,12 @@
 import { logger } from '../styles/logger.ts'
 
 import { options } from './options.ts'
+import { config } from '../config/config.ts'
 
-export function help(): void {
-  logger('Usage: todo-cli <options>')
-  logger('Version: 1.0.0', { color: 'orange' })
+export function help() {
+  logger(`Usage: ${config.name} <options>`)
+  logger(`Version: ${config.version}`, { color: 'orange' })
+  logger(`\nDescription: ${config.description}`)
   logger('\nOptions:')
   console.table(options)
   Deno.exit(1)
