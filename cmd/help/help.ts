@@ -8,6 +8,6 @@ export function help() {
   logger(`Version: ${config.version}`, { color: 'orange' })
   logger(`\nDescription: ${config.description}`)
   logger('\nOptions:')
-  console.table(options)
+  console.table(options, ['usage', 'description'])
   Deno.exit(1)
 }
