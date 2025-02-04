@@ -1,17 +1,10 @@
 import { Database } from '@db/sqlite'
 
-import { config } from '../cmd/config/config.ts'
+import { config } from '@/config/config.ts'
+import { TodoSchema } from '@/db/schema.ts'
 
 export const db = new Database(config.database)
 
 export function initialize() {
-  db.exec(
-    `
-    CREATE TABLE IF NOT EXISTS todos (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT,
-      completed BOOLEAN
-    );
-  `
-  )
+  db.exec(TodoSchema)
 }

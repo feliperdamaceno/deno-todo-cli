@@ -1,13 +1,9 @@
-import { logger } from '../styles/logger.ts'
+import { logger } from '@/helpers/logger.ts'
 
-import { db } from '../../db/client.ts'
+import { db } from '@/db/client.ts'
 
 export function create(title: string) {
   try {
-    if (!title) {
-      throw new Error('please provide a --title=example')
-    }
-
     const changes = db.exec(
       'INSERT INTO todos (title, completed) VALUES (?, ?)',
       title,
@@ -15,16 +11,13 @@ export function create(title: string) {
     )
 
     if (changes === 0) {
-      throw new Error('error while creating the todo, try again!')
+      throw new Deno.errors.Interrupted('Error while creating the todo.')
     }
 
-    logger('todo sucessfully created!', { color: 'green' })
+    logger('Todo sucessfully created', { color: 'green' })
   } catch (error) {
-    if (error instanceof Error) {
-      logger(error.message, { color: 'red' })
-    }
-
-    throw error
+    if (error instanceof Error) return logger(error.message, { color: 'red' })
+    throw new Error('Unexpected error happened, please try again!')
   } finally {
     db.close()
   }

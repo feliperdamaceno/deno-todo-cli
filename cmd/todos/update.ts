@@ -1,5 +1,5 @@
-import { logger } from '../styles/logger.ts'
+import { logger } from '@/helpers/logger.ts'
 
-export function update() {
+export function updateById() {
   return logger('update', { color: 'blue' })
 }

@@ -1,5 +1,5 @@
-import { logger } from '../styles/logger.ts'
+import { logger } from '@/helpers/logger.ts'
 
-export function del() {
+export function deleteById() {
   return logger('del', { color: 'blue' })
 }

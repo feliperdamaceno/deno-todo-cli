@@ -1,37 +1,38 @@
-import { logger } from '../styles/logger.ts'
+import { db } from '@/db/client.ts'
+import { Todo } from '@/db/schema.ts'
 
-import { db } from '../../db/client.ts'
-
-export function getAll() {
+export function getAll(): [Todo[], null] | [null, Error] {
+  let stmt
   try {
-    const stmt = db.prepare('SELECT * FROM todos')
-    const todos = stmt.all()
-
-    console.table(todos)
+    stmt = db.prepare('SELECT * FROM todos')
+    const todos = stmt.all<Todo>()
+    return [todos, null]
   } catch (error) {
-    if (error instanceof Error) {
-      logger(error.message, { color: 'red' })
-    }
-
-    throw error
+    if (error instanceof Error) return [null, error]
+    throw new Error('Unexpected error happened, please try again!')
   } finally {
+    stmt?.finalize()
     db.close()
   }
 }
 
-export function getById(id: number) {
+export function getById(id: number): [Todo, null] | [null, Error] {
+  let stmt
   try {
-    const stmt = db.prepare('SELECT * FROM todos WHERE id = ?')
-    const todo = stmt.get(id)
+    stmt = db.prepare('SELECT * FROM todos WHERE id = ?')
+    const todo = stmt.get<Todo>(id)
 
-    console.table(todo)
-  } catch (error) {
-    if (error instanceof Error) {
-      logger(error.message, { color: 'red' })
+    if (!todo) {
+      throw new Deno.errors.NotFound(`Todo with --id=${id} not found`)
     }
 
-    throw error
+    return [todo, null]
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) return [null, error]
+    if (error instanceof Error) return [null, error]
+    throw new Error('Unexpected error happened, please try again!')
   } finally {
+    stmt?.finalize()
     db.close()
   }
 }

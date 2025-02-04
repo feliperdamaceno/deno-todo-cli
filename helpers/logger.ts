@@ -1,4 +1,4 @@
-import { colors, type Colors } from './colors.ts'
+import { type Colors, colors } from '@/styles/colors.ts'
 
 type Options = {
   color?: Colors
