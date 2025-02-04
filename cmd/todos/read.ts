@@ -9,7 +9,7 @@ export function getAll(): [Todo[], null] | [null, Error] {
     return [todos, null]
   } catch (error) {
     if (error instanceof Error) return [null, error]
-    throw new Error('Unexpected error happened, please try again!')
+    throw new Error('an unexpected error happened, please try again!')
   } finally {
     stmt?.finalize()
     db.close()
@@ -23,14 +23,13 @@ export function getById(id: number): [Todo, null] | [null, Error] {
     const todo = stmt.get<Todo>(id)
 
     if (!todo) {
-      throw new Deno.errors.NotFound(`Todo with --id=${id} not found`)
+      throw new Deno.errors.NotFound(`todo with id=${id} not found.`)
     }
 
     return [todo, null]
   } catch (error) {
-    if (error instanceof Deno.errors.NotFound) return [null, error]
     if (error instanceof Error) return [null, error]
-    throw new Error('Unexpected error happened, please try again!')
+    throw new Error('an unexpected error happened, please try again!')
   } finally {
     stmt?.finalize()
     db.close()

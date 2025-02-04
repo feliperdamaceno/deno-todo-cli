@@ -26,9 +26,11 @@ function main() {
 
   if (args.create) {
     if (!args.title) {
-      return logger('Please provide a --title.', { color: 'red' })
+      return logger('please provide a valid --title.', { color: 'red' })
     }
-    return create(args.title)
+    const error = create(args.title)
+    if (error) return logger(error.message, { color: 'red' })
+    return logger('todo sucessfully created', { color: 'green' })
   }
 
   if (args.read) {
@@ -44,12 +46,15 @@ function main() {
   }
 
   if (args.update) {
-    if (!args.id) return logger('please provide a valid --id')
+    if (!args.id) return logger('please provide a valid --id', { color: 'red' })
     return updateById()
   }
 
   if (args.delete) {
-    return deleteById()
+    if (!args.id) return logger('please provide a valid --id', { color: 'red' })
+    const error = deleteById(args.id)
+    if (error) return logger(error.message, { color: 'red' })
+    return logger('todo sucessfully deleted', { color: 'green' })
   }
 }
 

@@ -1,5 +1,18 @@
-import { logger } from '@/helpers/logger.ts'
+import { db } from '@/db/client.ts'
 
-export function deleteById() {
-  return logger('del', { color: 'blue' })
+export function deleteById(id: number): null | Error {
+  try {
+    const changes = db.exec('DELETE FROM todos WHERE id = ?', id)
+
+    if (changes === 0) {
+      throw new Deno.errors.Interrupted(`error while deleting the todo ${id}.`)
+    }
+
+    return null
+  } catch (error) {
+    if (error instanceof Error) return error
+    throw new Error('an unexpected error happened, please try again!')
+  } finally {
+    db.close()
+  }
 }
