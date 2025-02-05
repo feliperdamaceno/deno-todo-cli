@@ -16,19 +16,19 @@ export const options = [
     alias: 'r',
     usage: '-r, --read [--id=<id>]',
     description:
-      'Reads a specific todo by its ID. If no ID is provided, returns all todos.'
+      'Reads a specific todo by its <id>. If no <id> is provided, returns all todos.'
   },
   {
     name: 'update',
     alias: 'u',
     usage: '-u, --update --id=<id> --title=<new-title>',
     description:
-      'Updates a todo item by its ID. Requires both the id and title arguments.'
+      'Updates a todo item by its <id>. Requires both the id and title or completed arguments.'
   },
   {
     name: 'delete',
     alias: 'd',
     usage: '-d, --delete --id=<id>',
-    description: 'Deletes a todo item by its ID.'
+    description: 'Deletes a todo item by its <id>.'
   }
 ]

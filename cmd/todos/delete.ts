@@ -1,6 +1,6 @@
 import { db } from '@/db/client.ts'
 
-export function deleteById(id: number): null | Error {
+export function deleteById(id: string): null | Error {
   try {
     const changes = db.exec('DELETE FROM todos WHERE id = ?', id)
 

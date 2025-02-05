@@ -16,7 +16,7 @@ export function getAll(): [Todo[], null] | [null, Error] {
   }
 }
 
-export function getById(id: number): [Todo, null] | [null, Error] {
+export function getById(id: string): [Todo, null] | [null, Error] {
   let stmt
   try {
     stmt = db.prepare('SELECT * FROM todos WHERE id = ?')

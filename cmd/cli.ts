@@ -1,16 +1,16 @@
 import { parseArgs } from '@std/cli'
 
-import { help } from '@/cmd/help/help.ts'
-import { options } from '@/cmd/help/options.ts'
+import { initialize } from '@/db/client.ts'
 
+import { options } from '@/cmd/help/options.ts'
+import { logger } from '@/helpers/logger.ts'
+import { table } from '@/helpers/table.ts'
+
+import { help } from '@/cmd/help/help.ts'
 import { create } from '@/cmd/todos/create.ts'
 import { getAll, getById } from '@/cmd/todos/read.ts'
 import { updateById } from '@/cmd/todos/update.ts'
 import { deleteById } from '@/cmd/todos/delete.ts'
-
-import { initialize } from '@/db/client.ts'
-import { logger } from '@/helpers/logger.ts'
-import { table } from '@/helpers/table.ts'
 
 function main() {
   initialize()
@@ -19,7 +19,9 @@ function main() {
     alias: options.reduce<{ [key: string]: string }>((aliases, option) => {
       aliases[option.name] = option.alias
       return aliases
-    }, {})
+    }, {}),
+    string: ['id', 'title'],
+    boolean: ['completed']
   })
 
   if (args.help) return help()
@@ -46,12 +48,29 @@ function main() {
   }
 
   if (args.update) {
-    if (!args.id) return logger('please provide a valid --id', { color: 'red' })
-    return updateById()
+    if (!args.id) {
+      return logger('please provide a valid --id.', { color: 'red' })
+    }
+
+    if (args.title) {
+      const title = args.title as string
+      const error = updateById(args.id, { title })
+      if (error) return logger(error.message, { color: 'red' })
+      return logger('todo title sucessfully updated', { color: 'green' })
+    }
+
+    if (args.completed) {
+      const completed = args.completed
+      const error = updateById(args.id, { completed })
+      if (error) return logger(error.message, { color: 'red' })
+      return logger('todo completed sucessfully', { color: 'green' })
+    }
   }
 
   if (args.delete) {
-    if (!args.id) return logger('please provide a valid --id', { color: 'red' })
+    if (!args.id) {
+      return logger('please provide a valid --id.', { color: 'red' })
+    }
     const error = deleteById(args.id)
     if (error) return logger(error.message, { color: 'red' })
     return logger('todo sucessfully deleted', { color: 'green' })
