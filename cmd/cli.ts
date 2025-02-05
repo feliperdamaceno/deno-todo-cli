@@ -38,12 +38,18 @@ function main() {
   if (args.read) {
     if (!args.id) {
       const [todos, error] = getAll()
+
       if (error) return logger(error.message, { color: 'red' })
+
+      if (!todos.length) {
+        return logger('no todo has been created yet.', { color: 'yellow' })
+      }
+
       return table({ dataset: todos, width: 20 })
     }
 
     const [todo, error] = getById(args.id)
-    if (error) return logger(error.message, { color: 'red' })
+    if (!todo || error) return logger(error.message, { color: 'red' })
     return table({ dataset: [todo], width: 20 })
   }
 

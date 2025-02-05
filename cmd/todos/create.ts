@@ -8,9 +8,7 @@ export function create(title: string): null | Error {
       false
     )
 
-    if (changes === 0) {
-      throw new Deno.errors.Interrupted('error while creating the todo.')
-    }
+    if (changes === 0) throw new Error('error while creating the todo.')
 
     return null
   } catch (error) {

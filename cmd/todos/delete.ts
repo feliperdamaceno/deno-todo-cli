@@ -4,9 +4,7 @@ export function deleteById(id: string): null | Error {
   try {
     const changes = db.exec('DELETE FROM todos WHERE id = ?', id)
 
-    if (changes === 0) {
-      throw new Deno.errors.Interrupted(`error while deleting the todo ${id}.`)
-    }
+    if (changes === 0) throw new Error(`error while deleting the todo ${id}.`)
 
     return null
   } catch (error) {

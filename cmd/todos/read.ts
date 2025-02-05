@@ -22,9 +22,7 @@ export function getById(id: string): [Todo, null] | [null, Error] {
     stmt = db.prepare('SELECT * FROM todos WHERE id = ?')
     const todo = stmt.get<Todo>(id)
 
-    if (!todo) {
-      throw new Deno.errors.NotFound(`todo with id=${id} not found.`)
-    }
+    if (!todo) throw new Error(`todo with id=${id} not found.`)
 
     return [todo, null]
   } catch (error) {

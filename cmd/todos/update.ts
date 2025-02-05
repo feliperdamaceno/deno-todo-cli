@@ -26,9 +26,7 @@ export function updateById(id: string, fields: Changable): null | Error {
       if (error) throw error
     }
 
-    if (changes === 0) {
-      throw new Deno.errors.Interrupted('error while updating the todo.')
-    }
+    if (changes === 0) throw new Error('error while updating the todo.')
 
     return null
   } catch (error) {

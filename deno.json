@@ -7,7 +7,8 @@
     "lineWidth": 80
   },
   "tasks": {
-    "cli": "deno run -RWE --allow-ffi --unstable-ffi cmd/cli.ts"
+    "cli": "deno run -RWE --allow-ffi --unstable-ffi cmd/cli.ts",
+    "build": "deno compile --output ./build/todo-cli -RWE --allow-ffi --unstable-ffi cmd/cli.ts"
   },
   "imports": {
     "@/": "./",
